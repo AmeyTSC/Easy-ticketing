@@ -13,6 +13,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  async validateUserById(userId: string): Promise<User> {
+    return this.UserModel.findById(userId).exec();
+  }
+  
   async signUp(@Body() createUserDto: CreateUserDto): Promise<User> {
     try {
       const salt = await bcrypt.genSalt(10);
@@ -62,5 +66,15 @@ export class AuthService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  async logout(@Body() email: string,password: string): Promise<User>{
+      const user=await this.UserModel.findOne({email}).exec();
+      if(!user){
+          throw new HttpException(
+            'User not found!',HttpStatus.NOT_FOUND,
+          );
+      }
+      return user;
   }
 }

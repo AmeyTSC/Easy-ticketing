@@ -20,5 +20,15 @@ export class AuthController {
     const response = await this.authService.login(email, password);
     return response;
   }
+
+  @Post('/logout')
+  async logout(
+    @Body('email') email: string,
+    @Body('password') password: string,
+  ) {
+    const response = await this.authService.logout(email, password);
+    return response;
+  }
+
 }
 

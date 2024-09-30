@@ -13,8 +13,8 @@ export class Tickets extends Document {
   @Prop({ required: true })
   priority: string;
 
-  @Prop({default:'open'})
-  status:string
+  @Prop({ default: 'open' })
+  status: string;
 
   @Prop({ required: true })
   category: string;
@@ -25,6 +25,8 @@ export class Tickets extends Document {
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', default: null })
   assignedAgent: User;
 
+  // @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Comment' }], default: [] })
+  // comments: MongooseSchema.Types.ObjectId[];
 }
 
 export const TicketSchema = SchemaFactory.createForClass(Tickets);

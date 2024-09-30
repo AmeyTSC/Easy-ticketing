@@ -1,5 +1,5 @@
 import { IsNotEmpty, MaxLength, MinLength, IsString, IsIn } from 'class-validator';
-
+import { IsMongoId } from 'class-validator';
 const categories = [
   'Login/Authentication Issue',
   'UI/UX Feedback',
@@ -13,7 +13,7 @@ const categories = [
   'Other',
 ];
 
-// Data transfer object for creating ticket
+
 export class CreateTicketDto {
   @IsNotEmpty()
   @IsString()
@@ -36,4 +36,21 @@ export class CreateTicketDto {
   @IsString()
   @IsIn(categories)
   public category: string;
+  
+
+  @IsNotEmpty()
+  @IsMongoId() 
+  public createdBy: string;
+
+  @IsMongoId() 
+  public assignedAgent?: string; 
+}
+
+
+export class CreateCommentDto {
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(2)
+  @MaxLength(64)
+  public text: string;
 }
