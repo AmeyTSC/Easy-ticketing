@@ -1,14 +1,19 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import { model, Schema, Document } from 'mongoose';
+import { Comment } from 'src/Interface/comments.interface';
 
-@Schema({ timestamps: { createdAt: true, updatedAt: false } })
-export class Comments extends Document{
+const CommentSchema: Schema = new Schema(
+  {
+    text: {
+      type: String,
+      required: true,
+    },
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  },
+  { timestamps: { createdAt: true, updatedAt: false } },
+);
 
-    @Prop({required:true})
-    text:string;
-
-    @Prop({required:true})
-    author:string;
-
-}
-export const CommentsSchema = SchemaFactory.createForClass(Comments);
+export {CommentSchema};
+export const CommentModel = model<Comment & Document>('Comment', CommentSchema);

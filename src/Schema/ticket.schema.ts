@@ -1,32 +1,58 @@
-import { SchemaFactory, Prop, Schema } from '@nestjs/mongoose';
-import { User } from './user.schema';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import { model, Schema, Document } from 'mongoose';
+import { Ticket } from 'src/Interface/tickets.interface';
 
-@Schema()
-export class Tickets extends Document {
-  @Prop({ required: true })
-  title: string;
-
-  @Prop({ required: true })
-  description: string;
-
-  @Prop({ required: true })
-  priority: string;
-
-  @Prop({ default: 'open' })
-  status: string;
-
-  @Prop({ required: true })
-  category: string;
-
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
-  createdBy: User;
-
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', default: null })
-  assignedAgent: User;
-
-  // @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Comment' }], default: [] })
-  // comments: MongooseSchema.Types.ObjectId[];
-}
-
-export const TicketSchema = SchemaFactory.createForClass(Tickets);
+const TicketSchema: Schema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      default: 'open',
+    },
+    priority: {
+      type: String,
+      required: true,
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    assignedAgent: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
+    comments:{
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Comment',
+        },
+      ],
+      default: [],
+    },
+    history: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'TicketLog',
+        },
+      ],
+      default: [],
+    },
+  },
+  { timestamps: true },
+);
+export {TicketSchema};
+export const TicketModel = model<Ticket & Document>('Ticket', TicketSchema);

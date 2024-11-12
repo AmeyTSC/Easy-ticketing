@@ -1,16 +1,21 @@
-import { SchemaFactory, Schema, Prop } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { model, Schema, Document } from 'mongoose';
+import { User } from 'src/Interface/user.interface';
 
-@Schema()
-export class User extends Document {
-  @Prop({ required: true, unique:true})
-  email: string;
+const UserSchema: Schema = new Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  role: {
+    type: String,
+    required: true,
+  },
+});
 
-  @Prop({ required: true })
-  password: string;
-
-  @Prop({ required: true })
-  role: string;
-}
-
-export const UserSchema = SchemaFactory.createForClass(User);
+export { UserSchema };
+export const UserModel = model<User & Document>('User', UserSchema);
